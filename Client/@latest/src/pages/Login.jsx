@@ -1,5 +1,6 @@
 import React, { useState,useRef } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
+import axios from 'axios'
 import {Link} from 'react-router-dom'
 const Login = () => {
     const [hide, SetHide] = useState(true);
@@ -15,8 +16,8 @@ const Login = () => {
               return;
             }
         const obj={
-            Email:Email,
-            Password:Password
+            email:Email,
+            password:Password
         };
         console.log(obj);
         sendData(obj);
@@ -25,7 +26,7 @@ const Login = () => {
         SetHide(!hide);
     }
     const sendData=async(obj)=>{
-        const res=await axios.post('',obj);
+        const res=await axios.post('http://localhost:1999/api/v1/login',obj);
         if(res.status==200)
             {
                 alert("Login succuessfully!");

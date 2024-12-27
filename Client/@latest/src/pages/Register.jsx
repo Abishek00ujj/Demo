@@ -6,35 +6,41 @@ const Register = () => {
     const emailRef=useRef(null);
     const passwordRef1=useRef(null);
     const passwordRef2=useRef(null);
-    const handleSubmit=()=>{
-        const Email=emailRef.current.value;
-        const Password1=passwordRef1.current.value;
-        const Password2=passwordRef2.current.value;
-        if(!Email||!Password1||!Password2)
-        {
-          alert("Please fill all the feilds!");
-          return;
-        }
-        if(Password2!=Password1)
-        {
-            alert('Passwords are not match!');
-            passwordRef1.current.value='';
-            passwordRef2.current.value=''
+    const handleSubmit = () => {
+        const Email = emailRef.current.value;
+        const Password1 = passwordRef1.current.value;
+        const Password2 = passwordRef2.current.value;
+    
+        if (!Email || !Password1 || !Password2) {
+            alert("Please fill all the fields!");
             return;
         }
-        const obj={
-            Email:Email,
-            Password:Password1
-        };
+        if (!/\S+@\S+\.\S+/.test(Email)) {
+            alert("Please enter a valid email address!");
+            return;
+        }
+        if (Password1 !== Password2) {
+            alert("Passwords do not match!");
+            passwordRef1.current.value = "";
+            passwordRef2.current.value = "";
+            return;
+        }
+    
+        const obj = { email: Email, password: Password1 };
         sendData(obj);
-    }
-    const sendData=async(obj)=>{
-        const res=await axios.post('',obj);
-        if(res.status==200)
-            {
-                alert("Register succuessfully!");
-            } 
-    }
+    };
+    const sendData = async (obj) => {
+        try {
+            const res = await axios.post('http://localhost:1999/api/v1/register',obj);
+            if (res.status === 201) {
+                alert("Registered successfully!");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Registration failed. Please try again!");
+        }
+    };
+    
     return (
         <>
             <div className='w-screen h-screen bg-[#121212] flex justify-center items-center'>
